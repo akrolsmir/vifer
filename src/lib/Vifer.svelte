@@ -1,6 +1,9 @@
 <script>
-  let word = 'BREAK' // TODO: Randomize word
-  let guesses = ['QUEST']
+  import { fives } from './fives'
+  const FIVES = fives.map((word) => word.toUpperCase())
+
+  let word = selectWord()
+  let guesses = []
   let newGuess = ''
   let showAnswer = false
 
@@ -34,31 +37,50 @@
       .map((i) => word[i] === guess[i])
       .reduce(SUM, 0)
   }
+
+  // Return a random word that has 5 different letters in it
+  function selectWord() {
+    const uniqueLetters = (word) => new Set(word.split('')).size
+    let word = ''
+    do {
+      const i = Math.floor(Math.random() * FIVES.length)
+      word = FIVES[i]
+    } while (uniqueLetters(word) < 5)
+    return word
+  }
+
+  function newWord() {
+    word = selectWord()
+    guesses = []
+    showAnswer = false
+  }
 </script>
 
 <div class="vifer">
-  <table>
-    <tbody>
-      <tr>
-        <td>Guesses</td>
-        <td>Matching</td>
-        <td>In Position</td>
-      </tr>
-      {#each guesses as g}
+  {#if guesses.length > 0}
+    <table>
+      <tbody>
         <tr>
-          <td>{g}</td>
-          <td>{matching(word, g)}</td>
-          <td>{position(word, g)}</td>
+          <td>Guesses</td>
+          <td>Matching</td>
+          <td>In Position</td>
         </tr>
-      {/each}
-    </tbody>
-  </table>
+        {#each guesses as g}
+          <tr>
+            <td>{g}</td>
+            <td>{matching(word, g)}</td>
+            <td>{position(word, g)}</td>
+          </tr>
+        {/each}
+      </tbody>
+    </table>
+  {/if}
 
   <input
     value={newGuess.toUpperCase()}
     on:input={(e) => (newGuess = e.target.value.toUpperCase())}
     on:keydown={handleKeypress}
-    placeholder="VIFER"
+    placeholder="Your guess"
   />
   <button on:click={guess} disabled={!valid}
     >{valid ? 'Guess!' : 'Type 5 letters'}</button
@@ -67,11 +89,15 @@
   <br />
   <br />
   <br />
-  <button
-    on:click={() => {
-      showAnswer = !showAnswer
-    }}>Show Answer</button
-  >
+  {#if !showAnswer}
+    <button
+      on:click={() => {
+        showAnswer = true
+      }}>Show Answer</button
+    >
+  {:else}
+    <button on:click={newWord}>New Word</button>
+  {/if}
   <p>{showAnswer ? word : '_ _ _ _ _'}</p>
 </div>
 
