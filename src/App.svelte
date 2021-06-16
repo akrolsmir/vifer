@@ -1,23 +1,15 @@
 <script>
-  import logo from './assets/svelte.png'
-  import Counter from './lib/Counter.svelte'
+  import Vifer from './lib/Vifer.svelte'
 </script>
 
 <main>
-  <img src={logo} alt="Svelte Logo" />
-  <h1>Hello world!</h1>
-
-  <Counter />
-
+  <h1>Welcome to Vifer!</h1>
   <p>
-    Visit <a href="https://svelte.dev">svelte.dev</a> to learn how to build Svelte
-    apps.
+    Try to guess the secret 5-letter word~<br />
+    (Inspired by
+    <a href="http://cinqo.freecell.net/index-orig.html">CINQO</a>)
   </p>
-
-  <p>
-    Check out <a href="https://github.com/sveltejs/kit#readme">SvelteKit</a> for
-    the officially supported framework, also powered by Vite!
-  </p>
+  <Vifer />
 </main>
 
 <style>
